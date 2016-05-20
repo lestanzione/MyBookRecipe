@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.stanzione.mybookrecipe.entity.RecipeItem;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -20,17 +22,12 @@ import java.util.ArrayList;
  */
 public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdapter.ViewHolder> {
 
-    public interface OnContinentListener{
-        void onContinentSelected(int position);
-    }
-
     private static final String TAG = ItemsRecyclerAdapter.class.getSimpleName();
 
     private Context context;
-    private ArrayList<String> values;
-    private WeakReference<OnContinentListener> activity;
+    private ArrayList<RecipeItem> values;
 
-    public ItemsRecyclerAdapter(Context context, ArrayList<String> values) {
+    public ItemsRecyclerAdapter(Context context, ArrayList<RecipeItem> values) {
         this.context = context;
         this.values = values;
     }
@@ -46,23 +43,24 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        final String currentItem = values.get(position);
-        final int itemPosition = position;
+        final RecipeItem currentRecipeItem = values.get(position);
+        final int recipeItemPosition = position;
 
-        holder.itemPositionTextView.setText(String.valueOf(itemPosition));
+        Log.d(TAG, "currentRecipeItem.getName(): " + currentRecipeItem.getName());
 
-        holder.itemRelativeLayout.setOnTouchListener(new View.OnTouchListener() {
+        holder.recipeItemPositionTextView.setText(String.valueOf(recipeItemPosition));
+        //holder.recipeItemNameTextView.setText(currentRecipeItem.getName());
+        holder.recipeItemImageView.setImageResource(currentRecipeItem.getDrawableId());
+
+        //TODO: use longclick ot touch?
+        holder.recipeItemRelativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onTouch(final View v, final MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    ClipData data = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-                    v.startDrag(data, shadowBuilder, v, 0);
-                    //v.setVisibility(View.INVISIBLE);
-                    return true;
-                } else {
-                    return false;
-                }
+            public boolean onLongClick(View v) {
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+                v.startDrag(data, shadowBuilder, v, 0);
+                //v.setVisibility(View.INVISIBLE);
+                return true;
             }
         });
 
@@ -74,15 +72,17 @@ public class ItemsRecyclerAdapter extends RecyclerView.Adapter<ItemsRecyclerAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout itemRelativeLayout;
-        ImageView itemImageView;
-        TextView itemPositionTextView;
+        RelativeLayout recipeItemRelativeLayout;
+        TextView recipeItemPositionTextView;
+        ImageView recipeItemImageView;
+        //TextView recipeItemNameTextView;
 
         public ViewHolder(View view) {
             super(view);
-            this.itemRelativeLayout = (RelativeLayout) view.findViewById(R.id.itemRelativeLayout);
-            this.itemImageView = (ImageView) view.findViewById(R.id.itemImageView);
-            this.itemPositionTextView = (TextView) view.findViewById(R.id.itemPositionTextView);
+            this.recipeItemRelativeLayout = (RelativeLayout) view.findViewById(R.id.recipeItemRelativeLayout);
+            this.recipeItemPositionTextView = (TextView) view.findViewById(R.id.recipeItemPositionTextView);
+            this.recipeItemImageView = (ImageView) view.findViewById(R.id.recipeItemImageView);
+            //this.recipeItemNameTextView = (TextView) view.findViewById(R.id.recipeItemNameTextView);
         }
     }
 

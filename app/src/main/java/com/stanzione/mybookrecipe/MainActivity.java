@@ -3,11 +3,8 @@ package com.stanzione.mybookrecipe;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.ClipData;
-import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,15 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.stanzione.mybookrecipe.entity.Recipe;
+import com.stanzione.mybookrecipe.entity.RecipeItem;
+import com.stanzione.mybookrecipe.entity.RecipeItemType;
 
 import java.util.ArrayList;
 
@@ -32,18 +31,21 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     RelativeLayout recipeListLayout;
-    FloatingActionButton fab;
+    RecyclerView recipeRecyclerView;
+    FloatingActionButton createNewRecipeButton;
 
     RelativeLayout newRecipeLayout;
     RelativeLayout newRecipeNameRelativeLayout;
-    RecyclerView newRecipeAllItemsRecyclerView;
-    RecyclerView newRecipeSomeItemsRecyclerView;
+    EditText newRecipeNameEditText;
+    RecyclerView newRecipeTemporaryItemsRecyclerView;
+    RecyclerView newRecipeItemsRecyclerView;
+    Button saveNewRecipeButton;
     Button closeNewRecipeButton;
-    ImageView imageView;
 
-    ArrayList<String> allItemsArrayList;
-    ArrayList<String> allItems2ArrayList;
-    ArrayList<String> someItemsArrayList;
+    ArrayList<Recipe> recipesArrayList;
+    ArrayList<RecipeItem> allItemsArrayList;
+    ArrayList<RecipeItem> temporaryItemsArrayList;
+    ArrayList<RecipeItem> newRecipeItemsArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +57,16 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("My Book Recipe");
 
         recipeListLayout = (RelativeLayout) findViewById(R.id.recipeListRelativeLayout);
+        recipeRecyclerView = (RecyclerView) findViewById(R.id.recipeRecyclerView);
+        createNewRecipeButton = (FloatingActionButton) findViewById(R.id.createNewRecipeButton);
 
         newRecipeLayout = (RelativeLayout) findViewById(R.id.newRecipeRelativeLayout);
         newRecipeNameRelativeLayout = (RelativeLayout) findViewById(R.id.newRecipeNameRelativeLayout);
-        newRecipeAllItemsRecyclerView = (RecyclerView) findViewById(R.id.newRecipeAllItemsRecyclerView);
-        newRecipeSomeItemsRecyclerView = (RecyclerView) findViewById(R.id.newRecipeSomeItemsRecyclerView);
+        newRecipeTemporaryItemsRecyclerView = (RecyclerView) findViewById(R.id.newRecipeTemporaryItemsRecyclerView);
+        newRecipeNameEditText = (EditText) findViewById(R.id.newRecipeNameEditText);
+        newRecipeItemsRecyclerView = (RecyclerView) findViewById(R.id.newRecipeItemsRecyclerView);
+        saveNewRecipeButton = (Button) findViewById(R.id.saveNewRecipeButton);
         closeNewRecipeButton = (Button) findViewById(R.id.closeNewRecipeButton);
-
-        imageView = (ImageView) findViewById(R.id.imageView);
 
         newRecipeLayout.setVisibility(View.INVISIBLE);
 
@@ -72,24 +76,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupElements(){
 
+        recipesArrayList = new ArrayList<>();
+
         allItemsArrayList = new ArrayList<>();
-        allItemsArrayList.add("1");
-        allItemsArrayList.add("2");
-        allItemsArrayList.add("3");
+        allItemsArrayList.add(new RecipeItem(RecipeItemType.MILK));
+        allItemsArrayList.add(new RecipeItem(RecipeItemType.EGG));
+        allItemsArrayList.add(new RecipeItem(RecipeItemType.SUGAR));
+        allItemsArrayList.add(new RecipeItem(RecipeItemType.BREAD));
+        allItemsArrayList.add(new RecipeItem(RecipeItemType.SALT));
+        allItemsArrayList.add(new RecipeItem(RecipeItemType.MEAT));
+        allItemsArrayList.add(new RecipeItem(RecipeItemType.VEGETABLES));
+        allItemsArrayList.add(new RecipeItem(RecipeItemType.FISH));
+        allItemsArrayList.add(new RecipeItem(RecipeItemType.FRUIT));
 
-        allItems2ArrayList = allItemsArrayList;
+        RecipeItemsDecorationColumns recipeItemsDecorationColumns = new RecipeItemsDecorationColumns(8, 8, 8, 8);
 
-        someItemsArrayList = new ArrayList<>();
+        LinearLayoutManager temporaryItemsLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        newRecipeTemporaryItemsRecyclerView.setLayoutManager(temporaryItemsLinearLayoutManager);
+        newRecipeTemporaryItemsRecyclerView.addItemDecoration(recipeItemsDecorationColumns);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        newRecipeAllItemsRecyclerView.setLayoutManager(linearLayoutManager);
-        newRecipeAllItemsRecyclerView.setAdapter(new ItemsRecyclerAdapter(this, allItems2ArrayList));
+        LinearLayoutManager allItemsLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        newRecipeItemsRecyclerView.setLayoutManager(allItemsLinearLayoutManager);
+        newRecipeItemsRecyclerView.addItemDecoration(recipeItemsDecorationColumns);
 
-        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        newRecipeSomeItemsRecyclerView.setLayoutManager(linearLayoutManager2);
-        newRecipeSomeItemsRecyclerView.setAdapter(new ItemsRecyclerAdapter(this, someItemsArrayList));
+        LinearLayoutManager recipesLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recipeRecyclerView.setLayoutManager(recipesLinearLayoutManager);
+        recipeRecyclerView.setAdapter(new RecipesRecyclerAdapter(this, recipesArrayList));
 
-        newRecipeSomeItemsRecyclerView.setOnDragListener(new View.OnDragListener() {
+        resetNewRecipeFields();
+
+        newRecipeItemsRecyclerView.setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
                 int action = event.getAction();
@@ -107,26 +123,58 @@ public class MainActivity extends AppCompatActivity {
                         // Dropped, reassign View to ViewGroup
                         View view = (View) event.getLocalState();
 
-                        TextView draggedItemPositionTextView = (TextView) view.findViewById(R.id.itemPositionTextView);
+                        TextView draggedItemPositionTextView = (TextView) view.findViewById(R.id.recipeItemPositionTextView);
                         int itemPosition = Integer.parseInt(draggedItemPositionTextView.getText().toString());
-
-
 
                         Log.d(TAG, "itemPosition: " + itemPosition);
 
-                        someItemsArrayList.add(allItemsArrayList.get(itemPosition));
-                        allItems2ArrayList.remove(itemPosition);
+                        newRecipeItemsArrayList.add(temporaryItemsArrayList.get(itemPosition));
+                        temporaryItemsArrayList.remove(itemPosition);
 
-                        //ViewGroup owner = (ViewGroup) view.getParent();
-                        //owner.removeView(view);
-                        //RelativeLayout container = (RelativeLayout) v;
-                        //container.addView(view);
-                        //view.setVisibility(View.VISIBLE);
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
                         //v.setBackgroundDrawable(normalShape);
-                        newRecipeSomeItemsRecyclerView.getAdapter().notifyDataSetChanged();
-                        newRecipeAllItemsRecyclerView.getAdapter().notifyDataSetChanged();
+                        newRecipeItemsRecyclerView.getAdapter().notifyDataSetChanged();
+                        newRecipeTemporaryItemsRecyclerView.getAdapter().notifyDataSetChanged();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+
+        newRecipeTemporaryItemsRecyclerView.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                int action = event.getAction();
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        // do nothing
+                        break;
+                    case DragEvent.ACTION_DRAG_ENTERED:
+                        //v.setBackgroundDrawable(enterShape);
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        //v.setBackgroundDrawable(normalShape);
+                        break;
+                    case DragEvent.ACTION_DROP:
+                        // Dropped, reassign View to ViewGroup
+                        View view = (View) event.getLocalState();
+
+                        TextView draggedItemPositionTextView = (TextView) view.findViewById(R.id.recipeItemPositionTextView);
+                        int itemPosition = Integer.parseInt(draggedItemPositionTextView.getText().toString());
+
+                        Log.d(TAG, "itemPosition: " + itemPosition);
+
+                        temporaryItemsArrayList.add(newRecipeItemsArrayList.get(itemPosition));
+                        newRecipeItemsArrayList.remove(itemPosition);
+
+                        break;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        //v.setBackgroundDrawable(normalShape);
+                        newRecipeItemsRecyclerView.getAdapter().notifyDataSetChanged();
+                        newRecipeTemporaryItemsRecyclerView.getAdapter().notifyDataSetChanged();
                         break;
                     default:
                         break;
@@ -136,11 +184,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        createNewRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 hideRecipeListLayout();
+            }
+        });
+
+        saveNewRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveNewRecipe();
             }
         });
 
@@ -151,65 +205,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: use longclick ot touch?
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-                v.startDrag(data, shadowBuilder, v, 0);
-                v.setVisibility(View.INVISIBLE);
-                return true;
-            }
-        });
+    }
 
-        imageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    ClipData data = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-                    v.startDrag(data, shadowBuilder, v, 0);
-                    v.setVisibility(View.INVISIBLE);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
+    private void saveNewRecipe(){
 
-        newRecipeNameRelativeLayout.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                int action = event.getAction();
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        // do nothing
-                        break;
-                    case DragEvent.ACTION_DRAG_ENTERED:
-                        //v.setBackgroundDrawable(enterShape);
-                        break;
-                    case DragEvent.ACTION_DRAG_EXITED:
-                        //v.setBackgroundDrawable(normalShape);
-                        break;
-                    case DragEvent.ACTION_DROP:
-                        // Dropped, reassign View to ViewGroup
-                        View view = (View) event.getLocalState();
-                        ViewGroup owner = (ViewGroup) view.getParent();
-                        owner.removeView(view);
-                        RelativeLayout container = (RelativeLayout) v;
-                        container.addView(view);
-                        view.setVisibility(View.VISIBLE);
-                        break;
-                    case DragEvent.ACTION_DRAG_ENDED:
-                        //v.setBackgroundDrawable(normalShape);
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
+        String recipeName = newRecipeNameEditText.getText().toString();
+
+        recipesArrayList.add(new Recipe(1, recipeName, newRecipeItemsArrayList, 0, "0"));
+        recipeRecyclerView.getAdapter().notifyDataSetChanged();
+
+        Toast.makeText(this, "Recipe has been created successfully", Toast.LENGTH_SHORT).show();
+
+        hideNewRecipeLayout();
+        resetNewRecipeFields();
+
+    }
+
+    private void resetNewRecipeFields(){
+
+        temporaryItemsArrayList = new ArrayList<>();
+        for(RecipeItem recipeItem : allItemsArrayList){
+            temporaryItemsArrayList.add(recipeItem);
+        }
+
+        newRecipeItemsArrayList = new ArrayList<>();
+
+        newRecipeTemporaryItemsRecyclerView.setAdapter(new ItemsRecyclerAdapter(this, temporaryItemsArrayList));
+        newRecipeItemsRecyclerView.setAdapter(new ItemsRecyclerAdapter(this, newRecipeItemsArrayList));
+
+        newRecipeNameEditText.setText("");
 
     }
 
@@ -238,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 myView.setVisibility(View.INVISIBLE);
+                createNewRecipeButton.setVisibility(View.INVISIBLE);
                 showNewRecipeLayout();
             }
         });
@@ -295,6 +320,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 myView.setVisibility(View.INVISIBLE);
+                createNewRecipeButton.setVisibility(View.VISIBLE);
                 showRecipeListLayout();
             }
         });

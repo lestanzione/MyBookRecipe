@@ -12,62 +12,121 @@
         android:id="@+id/newRecipeNameRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/white">
+
+        <EditText
+            android:id="@+id/newRecipeNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Enter the recipe name"
+            android:inputType="text"
+            android:maxLines="1"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"/>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/newRecipeItemsRelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/white"
         android:layout_below="@id/newRecipeNameRelativeLayout">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/newRecipeItemsHintTextView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_delete"/>
+            android:text="Drag the recipe items to here"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"
+            android:layout_below="@id/newRecipeItemsHintTextView"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/newRecipeItemsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/newRecipeItemsHintTextView"/>
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/newRecipeAllItemsRelativeLayout"
+        android:id="@+id/newRecipeTemporaryItemsRelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/white"
         android:layout_below="@id/newRecipeItemsRelativeLayout">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/newRecipeAllItemsRecyclerView"
+        <TextView
+            android:id="@+id/newRecipeTemporaryItemsHintTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Available Items"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"
+            android:layout_below="@id/newRecipeTemporaryItemsHintTextView"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/newRecipeTemporaryItemsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/newRecipeTemporaryItemsHintTextView"/>
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/newRecipeSomeItemsRelativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:background="@android:color/white"
-        android:layout_below="@id/newRecipeAllItemsRelativeLayout">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/newRecipeSomeItemsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/closeNewRecipeButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Close"
-        android:layout_below="@id/newRecipeSomeItemsRelativeLayout"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_below="@id/newRecipeTemporaryItemsRelativeLayout">
+
+        <Button
+            android:id="@+id/saveNewRecipeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save"
+            android:layout_below="@id/newRecipeTemporaryItemsRelativeLayout"/>
+
+        <Button
+            android:id="@+id/closeNewRecipeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Close"
+            android:layout_below="@id/saveNewRecipeButton"/>
+
+
+
+    </LinearLayout>
 
 </RelativeLayout>

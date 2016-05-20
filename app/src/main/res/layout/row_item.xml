@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/itemRelativeLayout"
+    android:id="@+id/recipeItemRelativeLayout"
     android:layout_width="wrap_content" android:layout_height="wrap_content">
 
+    <TextView
+        android:id="@+id/recipeItemPositionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:visibility="invisible"/>
+
     <ImageView
-        android:id="@+id/itemImageView"
+        android:id="@+id/recipeItemImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_input_add"/>
-
-    <TextView
-        android:id="@+id/itemPositionTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"/>
 
 </RelativeLayout>
