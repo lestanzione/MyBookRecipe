@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">My Book Recipe</string>
-    <string name="title_activity_main2">Main2Activity</string>
+
+    <string-array name="recipeDurationArray">
+        <item>10m</item>
+        <item>20m</item>
+        <item>30m</item>
+        <item>1h</item>
+        <item>1h30m</item>
+        <item>2h</item>
+        <item>4h</item>
+        <item>8h</item>
+    </string-array>
+
 </resources>
