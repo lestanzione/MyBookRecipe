@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     RelativeLayout recipeListLayout;
+    TextView recipeEmptyListTextView;
     RecyclerView recipeRecyclerView;
     FloatingActionButton createNewRecipeButton;
 
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("My Book Recipe");
 
         recipeListLayout = (RelativeLayout) findViewById(R.id.recipeListRelativeLayout);
+        recipeEmptyListTextView = (TextView) findViewById(R.id.recipeEmptyListTextView);
         recipeRecyclerView = (RecyclerView) findViewById(R.id.recipeRecyclerView);
         createNewRecipeButton = (FloatingActionButton) findViewById(R.id.createNewRecipeButton);
 
@@ -266,6 +268,8 @@ public class MainActivity extends AppCompatActivity {
         recipesArrayList.add(new Recipe(1, recipeName, newRecipeItemsArrayList, Integer.parseInt(recipeServes), recipeDuration));
         recipeRecyclerView.getAdapter().notifyDataSetChanged();
 
+        recipeEmptyListTextView.setVisibility(View.INVISIBLE);
+
         Toast.makeText(this, "Recipe has been created successfully", Toast.LENGTH_SHORT).show();
 
         hideNewRecipeLayout();
@@ -286,6 +290,9 @@ public class MainActivity extends AppCompatActivity {
         newRecipeItemsRecyclerView.setAdapter(new ItemsRecyclerAdapter(this, newRecipeItemsArrayList));
 
         newRecipeNameEditText.setText("");
+        newRecipeServesEditText.setText("");
+
+        newRecipeDurationSpinner.setSelection(0);
 
     }
 

@@ -5,7 +5,6 @@
     android:id="@+id/newRecipeNestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <RelativeLayout
@@ -202,8 +201,11 @@
                         android:layout_height="wrap_content"
                         android:hint="Serves"
                         android:inputType="number"
+                        android:maxLength="2"
                         android:singleLine="true"
-                        android:layout_toRightOf="@id/newRecipeServesImageView"/>
+                        android:background="@android:color/transparent"
+                        android:layout_toRightOf="@id/newRecipeServesImageView"
+                        android:layout_centerVertical="true"/>
 
                 </RelativeLayout>
 

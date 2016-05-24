@@ -60,12 +60,23 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"/>
 
+        <View
+            android:id="@+id/recipeItemDivider"
+            android:layout_width="1dp"
+            android:layout_height="80dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toLeftOf="@id/recipeItem1ImageView"
+            android:layout_toStartOf="@id/recipeItem1ImageView"/>
+
         <TextView
             android:id="@+id/recipeNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Recipe Name"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:maxLines="1"
             android:ellipsize="end"
             android:layout_alignParentLeft="true"
@@ -73,15 +84,15 @@
             android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:layout_toLeftOf="@id/recipeItem1ImageView"
-            android:layout_toStartOf="@id/recipeItem1ImageView"/>
+            android:layout_toLeftOf="@id/recipeItemDivider"
+            android:layout_toStartOf="@id/recipeItemDivider"/>
 
         <ImageView
             android:id="@+id/recipeServesImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:src="@drawable/ic_people"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
@@ -92,8 +103,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3"
-            android:textSize="22sp"
-            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_toRightOf="@id/recipeServesImageView"
@@ -101,10 +112,10 @@
 
         <ImageView
             android:id="@+id/recipeDurationImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:src="@drawable/ic_clock"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginBottom="8dp"
@@ -116,10 +127,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3"
-            android:textSize="22sp"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_toRightOf="@id/recipeDurationImageView"
             android:layout_below="@id/recipeNameTextView"/>
 
