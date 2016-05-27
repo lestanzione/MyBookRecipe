@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     RelativeLayout recipeListLayout;
     TextView recipeEmptyListTextView;
+    ImageView recipeEmptyListImageView;
     RecyclerView recipeRecyclerView;
     FloatingActionButton createNewRecipeButton;
 
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         recipeListLayout = (RelativeLayout) findViewById(R.id.recipeListRelativeLayout);
         recipeEmptyListTextView = (TextView) findViewById(R.id.recipeEmptyListTextView);
+        recipeEmptyListImageView = (ImageView) findViewById(R.id.recipeEmptyListImageView);
         recipeRecyclerView = (RecyclerView) findViewById(R.id.recipeRecyclerView);
         createNewRecipeButton = (FloatingActionButton) findViewById(R.id.createNewRecipeButton);
 
@@ -265,10 +268,23 @@ public class MainActivity extends AppCompatActivity {
         String recipeServes = newRecipeServesEditText.getText().toString();
         String recipeDuration = recipeDurationArray[newRecipeDurationSpinner.getSelectedItemPosition()];
 
+        if(recipeName.trim().isEmpty()){
+            Toast.makeText(this, "Please enter a recipe name to save it", Toast.LENGTH_SHORT).show();
+            newRecipeNameEditText.requestFocus();
+            return;
+        }
+
+        if(recipeServes.trim().isEmpty()){
+            Toast.makeText(this, "Please enter how many people this recipe serves", Toast.LENGTH_SHORT).show();
+            newRecipeServesEditText.requestFocus();
+            return;
+        }
+
         recipesArrayList.add(new Recipe(1, recipeName, newRecipeItemsArrayList, Integer.parseInt(recipeServes), recipeDuration));
         recipeRecyclerView.getAdapter().notifyDataSetChanged();
 
         recipeEmptyListTextView.setVisibility(View.INVISIBLE);
+        recipeEmptyListImageView.setVisibility(View.INVISIBLE);
 
         Toast.makeText(this, "Recipe has been created successfully", Toast.LENGTH_SHORT).show();
 

@@ -5,6 +5,7 @@
     android:id="@+id/newRecipeNestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <RelativeLayout
@@ -34,6 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Enter the recipe name"
+                android:textColor="@color/colorPrimaryText"
                 android:inputType="text"
                 android:maxLines="1"
                 android:background="@android:color/transparent"
@@ -68,18 +70,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Drag the recipe items to here"
+                    android:textColor="@color/colorSecondaryText"
                     android:layout_margin="4dp"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/colorDivider"
                     android:layout_below="@id/newRecipeItemsHintTextView"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/newRecipeItemsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="8dp"
                     android:layout_below="@id/newRecipeItemsHintTextView"/>
 
             </RelativeLayout>
@@ -110,18 +114,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Available Items"
+                    android:textColor="@color/colorSecondaryText"
                     android:layout_margin="4dp"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/colorDivider"
                     android:layout_below="@id/newRecipeTemporaryItemsHintTextView"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/newRecipeTemporaryItemsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="8dp"
                     android:layout_below="@id/newRecipeTemporaryItemsHintTextView"/>
 
             </RelativeLayout>
@@ -166,6 +172,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="Prepare duration"
+                        android:textColor="@color/colorPrimaryText"
                         android:singleLine="true"
                         android:layout_toRightOf="@id/newRecipeDurationImageView"
                         android:layout_centerVertical="true"/>
@@ -200,6 +207,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Serves"
+                        android:textColor="@color/colorPrimaryText"
                         android:inputType="number"
                         android:maxLength="2"
                         android:singleLine="true"
@@ -230,6 +238,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Save"
+                android:textColor="@color/colorPrimaryText"
+                android:background="@color/colorAccent"
+                android:layout_margin="8dp"
+                android:minHeight="0dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:layout_below="@id/newRecipeTemporaryItemsRelativeLayout"/>
 
             <Button
@@ -238,6 +252,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Close"
+                android:textColor="@color/colorPrimaryText"
+                android:background="@color/colorAccent"
+                android:layout_margin="8dp"
+                android:minHeight="0dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:layout_below="@id/saveNewRecipeButton"/>
 
         </LinearLayout>
